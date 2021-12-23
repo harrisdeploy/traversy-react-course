@@ -17,14 +17,15 @@ function Header({ text, bgColor, textColor }) {
     )
 }
 
-Header.defaultProps = {
-    text: 'Feedback UI',
+Header.defaultProps = {//can pass in default props automatically
+    text: 'Feedback UI', 
     bgColor: 'rgba(0,0,0,0.4)',
     textColor: '#ff6a95',
 }
 
-Header.propTypes = {
-    text: propTypes.string,
+Header.propTypes = {//this is making sure there's a specific type to each prop- 
+    //'type jacking', typescript doesn't require this
+    text: propTypes.string, 
     bgColor: propTypes.string, 
     textColor: propTypes.string,
 }
