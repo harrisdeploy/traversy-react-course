@@ -1,22 +1,40 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import './App.css';
-
+import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 
 import Header from './components/Header';
 import FeedbackList from './components/FeedbackList';
+import FeedbackStats from './components/FeedbackStats';
+import FeedbackForm from './components/FeedbackForm';
+
 import FeedbackData from './data/FeedbackData';
 
 
 function App() {
-    const [feedback, useFeedback] = useState(FeedbackData);
+    const [feedback, setFeedback] = useState(FeedbackData);
+    const addFeedback = (newFeedback) => {
+        newFeedback.id = uuidv4();
+        setFeedback([newFeedback, ...feedback] );
+    }
+    const deleteFeedback = (id) => {
+        if(window.confirm('Are you sure you want to delete?')) {
+            setFeedback(feedback.filter((item) => item.id !== id ));
+            //High Order function which filters out based on the function, 
+            //and makes a new data structure afterwards
+            //the function is filtering out any item.id which === id
 
+        }
+    }
     return (
         <>
         <Header text="Hello World"/>
         <div className='container'>
-            <FeedbackList feedback={feedback} />
+            <FeedbackForm handleAdd={addFeedback} />
+            <FeedbackStats feedback={feedback} />
+            <FeedbackList feedback={feedback}
+            handleDelete={deleteFeedback}/>
         </div>
         </>
     )
