@@ -1,42 +1,48 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import './App.css';
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+// import { useState } from 'react';
+import {
+    BrowserRouter as Router,
+    Link, 
+    Routes,
+    Route
+} from 'react-router-dom';
+import { FeedbackProvider } from './context/FeedbackContext';
 
 import Header from './components/Header';
 import FeedbackList from './components/FeedbackList';
 import FeedbackStats from './components/FeedbackStats';
 import FeedbackForm from './components/FeedbackForm';
 
-import FeedbackData from './data/FeedbackData';
+import AboutIconLink from './shared/AboutIconLink';
 
+// import FeedbackData from './data/FeedbackData';
+
+import AboutPage from './pages/AboutPage';
 
 function App() {
-    const [feedback, setFeedback] = useState(FeedbackData);
-    const addFeedback = (newFeedback) => {
-        newFeedback.id = uuidv4();
-        setFeedback([newFeedback, ...feedback] );
-    }
-    const deleteFeedback = (id) => {
-        if(window.confirm('Are you sure you want to delete?')) {
-            setFeedback(feedback.filter((item) => item.id !== id ));
-            //High Order function which filters out based on the function, 
-            //and makes a new data structure afterwards
-            //the function is filtering out any item.id which === id
+    // const [feedback, setFeedback] = useState(FeedbackData);
+    //this is a hook, 'useState()', setting the state within a functional component, 
+    //which otherwise wouldn't have been able to traditionally. 
+    //feedback is the data,setFeedback is the function (i.e. to set data into the state)
 
-        }
-    }
     return (
-        <>
-        <Header text="Hello World"/>
-        <div className='container'>
-            <FeedbackForm handleAdd={addFeedback} />
-            <FeedbackStats feedback={feedback} />
-            <FeedbackList feedback={feedback}
-            handleDelete={deleteFeedback}/>
-        </div>
-        </>
+        <FeedbackProvider>
+                <Header text="Hello World"/>
+                <Routes>
+                    <Route path="/" element={
+                        <div className='container'>
+                            <FeedbackForm />
+                            <FeedbackStats />
+                            <FeedbackList />
+                        </div>
+                    } />
+                    {/*<Route path="/" element={<App />}/>*/}
+                    <Route path="about" element={<AboutPage />} />
+                </Routes>
+                <AboutIconLink />
+        </FeedbackProvider>
     )
 }
 
